@@ -20,6 +20,14 @@ int windows = 0;
 
 float colors[6][3] = { {1,0,1}, {0,0,1},{0,1,1},{0,1,0},{1,1,0},{1,0,0} };
 
+void draw_count_border_line(image im){
+    for(int i=0;i<im.w;i++){
+        set_pixel(im,i,(im.h)/2,0,1);
+        set_pixel(im,i,(im.h)/2,1,0);
+        set_pixel(im,i,(im.h)/2,2,0);
+    }
+}
+
 float get_color(int c, int x, int max)
 {
     float ratio = ((float)x/max)*5;
@@ -216,7 +224,6 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             if(right > im.w-1) right = im.w-1;
             if(top < 0) top = 0;
             if(bot > im.h-1) bot = im.h-1;
-
             draw_box_width(im, left, top, right, bot, width, red, green, blue);
             if (alphabet) {
                 image label = get_label(alphabet, names[class], (im.h*.03)/10);
@@ -224,6 +231,7 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             }
         }
     }
+    draw_count_border_line(im);
 }
 
 void transpose_image(image im)

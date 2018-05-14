@@ -346,7 +346,6 @@ void get_region_boxes(layer l, int w, int h, float thresh, float **probs, box *b
 
             int class_index = index * (l.classes + 5) + 5;
             if(l.softmax_tree){
-
                 hierarchy_predictions(predictions + class_index, l.classes, l.softmax_tree, 0);
                 int found = 0;
                 if(map){
@@ -366,9 +365,15 @@ void get_region_boxes(layer l, int w, int h, float thresh, float **probs, box *b
                     }
                 }
             } else {
+                //runtime comes here
                 for(j = 0; j < l.classes; ++j){
                     float prob = scale*predictions[class_index+j];
                     probs[index][j] = (prob > thresh) ? prob : 0;
+                    probs[index][j] *= being_uncounted_probablity(boxes[index].y);
+
+                    if(probs[index][j]!=0){
+                        printf("x=%.2f,y=%.2f,w=%.2f,h=%.2f,p=%.2f\n",boxes[index].x,boxes[index].y,boxes[index].w,boxes[index].h,probs[index][j]);
+                    }
                 }
             }
             if(only_objectness){

@@ -11,6 +11,13 @@
 
 #pragma warning(disable: 4996)
 
+float being_uncounted_probablity(float relativeY){
+    if(relativeY>0.5)
+        return 1-sqrt(relativeY);
+    else 
+        return 1;
+}
+
 int *read_map(char *filename)
 {
     int n = 0;
